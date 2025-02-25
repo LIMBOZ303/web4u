@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang Web Lãng Mạn</title>
+  <!-- Thư viện canvas-confetti để tạo hiệu ứng pháo hoa -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      font-family: 'Arial', sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+    }
+    img {
+      width: 400px;
+      height: 400px;
+      max-width: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    h1 {
+      margin: 20px 0;
+      font-size: 24px;
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+    /* Nút "Có": màu nền gradient trắng sang hồng, chữ màu hồng đậm */
+    #yesBtn {
+      background: linear-gradient(to right, #ffffff, #ffc0cb);
+      color: #d6336c;
+      border: none;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    }
+    /* Nút "Không": không có màu nền, chỉ viền và chữ màu đỏ */
+    #noBtn {
+      background: transparent;
+      border: 2px solid #dc3545;
+      color: #dc3545;
+      position: relative;
+    }
+    button:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Thay đổi src của ảnh theo nhu cầu -->
+    <img src="/anh-meme-meo-12.jpg" alt="Hình ảnh lãng mạn">
+    <h1>Em có tha lỗi cho anh không?</h1>
+    <button id="yesBtn">Có</button>
+    <button id="noBtn">Không</button>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+
+    // Khi nhấn nút "Có"
+    yesBtn.addEventListener('click', function() {
+      // Thay đổi nội dung trang
+      document.body.innerHTML = `
+        <div class="container">
+          <img src="/meo-cam-bong-hoa-tren-tay-manh-me-len-23-09-00-15.jpg" alt="Cảm ơn em" style="border-radius:10px;">
+          <h1>Thank ơn my bây bi gơ!! love u so much</h1>
+          <!-- Phát nhạc, hãy thay "audio.mp3" bằng file nhạc của bạn -->
+          <audio id="loveAudio" src="/videoplayback.m4a" autoplay loop></audio>
+        </div>
+      `;
+      // Kích hoạt hiệu ứng pháo hoa
+      launchConfetti();
+    });
+
+    // Hàm di chuyển nút "Không" sang vị trí ngẫu nhiên
+    function moveButton() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const btnWidth = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
+      const randomX = Math.floor(Math.random() * (vw - btnWidth));
+      const randomY = Math.floor(Math.random() * (vh - btnHeight));
+
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = randomX + 'px';
+      noBtn.style.top = randomY + 'px';
+    }
+
+    // Khi rê chuột hoặc chạm vào nút "Không" thì nó sẽ di chuyển
+    noBtn.addEventListener('mouseover', moveButton);
+    noBtn.addEventListener('touchstart', moveButton);
+
+    // Hàm bắn pháo hoa sử dụng canvas-confetti
+    function launchConfetti() {
+      const duration = 5 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+
+      const interval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          return;
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { 
+          particleCount, 
+          origin: { x: Math.random(), y: Math.random() - 0.2 } 
+        }));
+      }, 250);
+    }
+  </script>
+</body>
+</html>
